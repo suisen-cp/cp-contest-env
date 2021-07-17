@@ -132,7 +132,7 @@
         {
             "id": "directory",
             "description": "directory",
-            "default": "./",
+            "default": "src/",
             "type": "promptString"
         },
         {
