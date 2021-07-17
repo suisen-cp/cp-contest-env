@@ -1,0 +1,151 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++-7 アクティブなファイルのビルド",
+            "command": "/usr/bin/g++-7",
+            "args": [
+                "-I", "${env:ACL_DIR}",
+                "-I", "${env:SUISEN_CPP}",
+                "-std=gnu++17",
+                "-Wall", "-Wextra",
+                "-g", "-fsanitize=address", "-fsanitize=undefined",
+                // "-O2",
+                "${file}",
+                "-o", "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "デバッガーによって生成されたタスク。"
+        },
+        {
+            "label": "expand library",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "./scripts/expander.py",
+                "--lib", "${env:SUISEN_CPP}",
+                "--out", "${relativeFileDirname}/combined.cpp",
+                "${file}",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "label": "expand library (including ac-library)",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}/scripts/expander.py",
+                "--acl", "${env:ACL_DIR}",
+                "--lib", "${env:SUISEN_CPP}",
+                "--out", "${relativeFileDirname}/combined.cpp",
+                "${file}",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+        },
+        {
+            "label": "create template files (range)",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}/scripts/create_template_files.py",
+                "${env:SUISEN_CPP}/library/template.cpp",
+                "--dir", "${input:directory}",
+                "--range",
+                "--out", "${input:range_from}", "${input:range_to}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+        {
+            "label": "create template file",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}/scripts/create_template_files.py",
+                "${env:SUISEN_CPP}/library/template.cpp",
+                "--dir", "${input:directory}",
+                "--out", "${input:filename_without_extension}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            }
+        },
+    ],
+    "inputs": [
+        {
+            "id": "filename_without_extension",
+            "description": "filename without extension",
+            "default": "Main",
+            "type": "promptString"
+        },
+        {
+            "id": "directory",
+            "description": "directory",
+            "default": "./",
+            "type": "promptString"
+        },
+        {
+            "id": "range_from",
+            "description": "",
+            "default": "A",
+            "type": "promptString"
+        },
+        {
+            "id": "range_to",
+            "description": "",
+            "default": "F",
+            "type": "promptString"
+        },
+    ]
+}
