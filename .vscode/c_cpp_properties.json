@@ -1,20 +1,30 @@
 {
-    // 公式リファリンス
-    // https://code.visualstudio.com/docs/cpp/c-cpp-properties-schema-reference
     "configurations": [
         {
             "name": "Linux g++",
             "includePath": [
                 "${env:ACL_DIR}/**",
-                "${env:SUISEN_CPP}/**"
+                "${env:SUISEN_CPP}/**",
+                "${env:BOOST_PATH}/**",
+                "/home/ms11-/CompetitiveProgramming/cp-library-cpp/**",
+                "/home/ms11-/CompetitiveProgramming/ac-library/**",
+                "/lib/boost_1_79_0/**"
             ],
             "compilerArgs": [
-                "-I", "${env:ACL_DIR}",
-                "-I", "${env:SUISEN_CPP}",
+                "-I",
+                "${env:ACL_DIR}",
+                "-I",
+                "${env:SUISEN_CPP}",
+                "-I",
+                "${env:BOOST_PATH}",
                 "-std=gnu++17",
-                "-Wall", "-Wextra",
-                "-g", "-fsanitize=address", "-fsanitize=undefined",
-                "-O2"
+                "-Wall",
+                "-Wextra",
+                "-g",
+                "-fsanitize=address",
+                "-fsanitize=undefined",
+                "-O2",
+                "-fsplit-stack"
             ],
             "defines": [
                 "LOCAL"

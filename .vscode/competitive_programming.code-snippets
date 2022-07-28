@@ -15,12 +15,13 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
-    "fast cin": {
+    "qc fium": {
         "scope": "cpp",
-        "prefix": "fast cin",
+        "prefix": "qcfium",
         "body": [
-            "ios::sync_with_stdio(false);",
-            "cin.tie(nullptr);"
+            "#pragma GCC target(\"avx2\")",
+            "#pragma GCC optimize(\"O3\")",
+            "#pragma GCC optimize(\"unroll-loops\")",
         ]
     },
     "int inf": {
@@ -31,7 +32,7 @@
     "long inf": {
         "scope": "cpp",
         "prefix": "linf",
-        "body": [ "numeric_limits<ll>::max()" ]
+        "body": [ "numeric_limits<long long>::max()" ]
     },
     "constexpr": {
         "scope": "cpp",
@@ -57,4 +58,38 @@
             "}",
         ]
     },
+    "set default multiplication to FPS": {
+        "scope": "cpp",
+        "prefix": "initfps",
+        "body": "suisen::FPS<mint>::set_multiplication([](const auto &a, const auto &b) { return atcoder::convolution(a, b); });"
+    },
+    "find path on tree": {
+        "scope": "cpp",
+        "prefix": "find_path_on_tree",
+        "body": [
+            "auto find_path_on_tree(const vector<vector<int>> &g, int u, int v) {",
+            "    vector<int> res;",
+            "    auto dfs = [&](auto dfs, int cur, int par) -> bool {",
+            "        res.push_back(cur);",
+            "        if (cur == v) return true;",
+            "        for (int nxt : g[cur]) if (nxt != par and dfs(dfs, nxt, cur)) return true;",
+            "        res.pop_back();",
+            "        return false;",
+            "    };",
+            "    dfs(dfs, u, -1);",
+            "    return res;",
+            "}"
+        ]
+    },
+    "enable simd": {
+        "scope": "cpp",
+        "prefix": "include_simd",
+        "body": [
+            "#ifdef _MSC_VER",
+            "#  include <intrin.h>",
+            "#else",
+            "#  include <x86intrin.h>",
+            "#endif",
+        ]
+    }
 }

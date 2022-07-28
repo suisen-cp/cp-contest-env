@@ -3,7 +3,7 @@
         "javascript": "node",
         "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
         "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
-        "cpp": "cd $dir && g++ -I ${ACL_DIR} -I ${SUISEN_CPP} -std=gnu++17 -g -Wall -Wextra -fsanitize=address -fsanitize=undefined -O2 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "cpp": "cd $dir && g++ -I ${ACL_DIR} -I ${SUISEN_CPP} -I ${BOOST_PATH} -std=gnu++17 -D LOCAL -g -Wall -Wextra -fsanitize=address -fsanitize=undefined -O2 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
         "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
         "php": "php",
         "python": "python -u",

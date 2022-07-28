@@ -10,6 +10,7 @@ from typing import List
 
 logger = getLogger(__name__)  # type: Logger
 
+include = re.compile('#include\s*["<](.*)[">]\s*')
 acl_include = re.compile('#include\s*["<](atcoder/.*)[">]\s*')
 lib_include = re.compile('#include\s*["<](library/.*)[">]\s*')
 
@@ -19,7 +20,7 @@ lib_include_guard = re.compile('#.*SUISEN_.*')
 defined = set()
 
 def dfs(f: str, is_acl: bool) -> List[str]:
-    print(f'expanding : {f}\ntype : {"ACL" if is_acl else "LIB"}')
+    print(f'expanding : {f}')
     global defined
     if f in defined:
         logger.info('already included {}, skip'.format(f))
@@ -37,16 +38,22 @@ def dfs(f: str, is_acl: bool) -> List[str]:
     for line in s.splitlines():
         if acl_include_guard.match(line) or lib_include_guard.match(line):
             continue
-        if expand_acl:
-            acl_matcher = acl_include.match(line)
-            if acl_matcher:
-                result.extend(dfs(acl_matcher.group(1), True))
-                continue
+        acl_matcher = acl_include.match(line)
+        if expand_acl and acl_matcher:
+            result.extend(dfs(acl_matcher.group(1), True))
+            continue
         lib_matcher = lib_include.match(line)
         if lib_matcher:
             result.extend(dfs(lib_matcher.group(1), False))
             continue
-
+        if not (acl_matcher or lib_matcher):
+            std_matcher = include.match(line)
+            if std_matcher:
+                std_lib = std_matcher.group(1)
+                if std_lib in defined:
+                    logger.info(f'already included {std_lib}, skip')
+                    continue
+                defined.add(std_lib)
         result.append(line)
     return result
 
@@ -87,6 +94,12 @@ if __name__ == "__main__":
             continue
         result.append(line)
 
-    output = '\n'.join(result) + '\n'
+    output = ""
+    for i, line in enumerate(result):
+        if i and not result[i - 1] and not result[i]:
+            continue
+        output += f'{line}\n'
+    output += '\n'
+
     with open(opts.out, 'w') as f:
         f.write(output)

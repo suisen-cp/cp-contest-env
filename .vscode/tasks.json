@@ -2,18 +2,28 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "C/C++: g++-9 アクティブなファイルのビルド",
             "type": "cppbuild",
-            "label": "C/C++: g++-7 アクティブなファイルのビルド",
-            "command": "/usr/bin/g++-7",
+            "command": "/usr/bin/g++-9",
             "args": [
-                "-I", "${env:ACL_DIR}",
-                "-I", "${env:SUISEN_CPP}",
+                "-I",
+                "~/CompetitiveProgramming/cp-library-cpp",
+                "-I",
+                "~/CompetitiveProgramming/ac-library",
+                "-I",
+                "/lib/boost_1_79_0",
+                "-D",
+                "LOCAL",
                 "-std=gnu++17",
-                "-Wall", "-Wextra",
-                "-g", "-fsanitize=address", "-fsanitize=undefined",
-                // "-O2",
+                "-Wall",
+                "-Wextra",
+                "-g",
+                "-fsanitize=address",
+                "-fsanitize=undefined",
+                "-fsplit-stack",
                 "${file}",
-                "-o", "${fileDirname}/${fileBasenameNoExtension}"
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -29,12 +39,14 @@
             "command": "python",
             "args": [
                 "./scripts/expander.py",
-                "--lib", "${env:SUISEN_CPP}",
-                "--out", "${relativeFileDirname}/combined.cpp",
-                "${file}",
+                "--lib",
+                "${env:SUISEN_CPP}",
+                "--out",
+                "${relativeFileDirname}/combined.cpp",
+                "${file}"
             ],
             "options": {
-                "cwd": "${workspaceFolder}",
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
@@ -55,13 +67,16 @@
             "command": "python",
             "args": [
                 "${workspaceFolder}/scripts/expander.py",
-                "--acl", "${env:ACL_DIR}",
-                "--lib", "${env:SUISEN_CPP}",
-                "--out", "${relativeFileDirname}/combined.cpp",
-                "${file}",
+                "--acl",
+                "${env:ACL_DIR}",
+                "--lib",
+                "${env:SUISEN_CPP}",
+                "--out",
+                "${relativeFileDirname}/combined.cpp",
+                "${file}"
             ],
             "options": {
-                "cwd": "${workspaceFolder}",
+                "cwd": "${workspaceFolder}"
             },
             "group": {
                 "kind": "build",
@@ -74,7 +89,7 @@
                 "panel": "shared",
                 "showReuseMessage": true,
                 "clear": false
-            },
+            }
         },
         {
             "label": "create template files (range)",
@@ -83,12 +98,15 @@
             "args": [
                 "${workspaceFolder}/scripts/create_template_files.py",
                 "${env:SUISEN_CPP}/library/template.cpp",
-                "--dir", "${input:directory}",
+                "--dir",
+                "${input:directory}",
                 "--range",
-                "--out", "${input:range_from}", "${input:range_to}"
+                "--out",
+                "${input:range_from}",
+                "${input:range_to}"
             ],
             "options": {
-                "cwd": "${workspaceFolder}",
+                "cwd": "${workspaceFolder}"
             },
             "presentation": {
                 "echo": true,
@@ -106,11 +124,13 @@
             "args": [
                 "${workspaceFolder}/scripts/create_template_files.py",
                 "${env:SUISEN_CPP}/library/template.cpp",
-                "--dir", "${input:directory}",
-                "--out", "${input:filename_without_extension}"
+                "--dir",
+                "${input:directory}",
+                "--out",
+                "${input:filename_without_extension}"
             ],
             "options": {
-                "cwd": "${workspaceFolder}",
+                "cwd": "${workspaceFolder}"
             },
             "presentation": {
                 "echo": true,
@@ -120,7 +140,7 @@
                 "showReuseMessage": true,
                 "clear": false
             }
-        },
+        }
     ],
     "inputs": [
         {
@@ -146,6 +166,6 @@
             "description": "",
             "default": "F",
             "type": "promptString"
-        },
+        }
     ]
 }
